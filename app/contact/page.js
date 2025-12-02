@@ -13,7 +13,7 @@ export default function ContactPage() {
     const formData = new FormData(e.target);
     try {
       // 👇 PASTE YOUR FORMSPREE ID HERE 👇
-      const response = await fetch("https://formspree.io/f/YOUR_FORM_ID_HERE", { 
+      const response = await fetch("https://formspree.io/f/xkgdbbzo", { 
         method: "POST",
         body: formData,
         headers: { 'Accept': 'application/json' }
