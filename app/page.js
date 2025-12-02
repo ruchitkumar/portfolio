@@ -1,5 +1,5 @@
 "use client";
-import React, { useRef, useState, useEffect } from 'react';
+import React, { useRef, useState } from 'react';
 import { motion, useScroll, useTransform, AnimatePresence } from 'framer-motion';
 import { ArrowUpRight, Database, Medal, MapPin, Briefcase, GraduationCap, Mail, X } from 'lucide-react';
 import Link from 'next/link';
@@ -23,7 +23,7 @@ const DATA = {
       impact: "Identified key risk factors to enhance loan approval efficiency.",
       stack: ["R Language", "Logistic Regression", "Decision Trees"],
       color: "#F3F4F6", 
-      // ✅ RESTORED: The Financial Graph Image you liked
+      // ✅ IMAGE: Financial Graph
       image: "https://images.unsplash.com/photo-1563013544-824ae1b704d3?q=80&w=2670&auto=format&fit=crop"
     },
     {
@@ -57,8 +57,8 @@ const DATA = {
       impact: "Delivered a secure messaging environment with persistent message history and real-time updates.",
       stack: ["Django", "Python", "WebSockets", "HTML/CSS"],
       color: "#9CA3AF", 
-      // ✅ NEW IMAGE: Clean Messaging / Chat Concept
-      image: "https://images.unsplash.com/photo-1530811761207-8d9d22f0a141?q=80&w=2670&auto=format&fit=crop"
+      // ✅ IMAGE: Chat App UI
+      image: "https://images.unsplash.com/photo-1611162617474-5b21e879e113?q=80&w=2574&auto=format&fit=crop"
     }
   ],
   skills: ["Python", "SQL", "Power BI", "R Language", "Tableau", "Machine Learning", "Excel"]
@@ -118,7 +118,7 @@ const ProjectModal = ({ project, onClose }) => {
   );
 };
 
-// 2. STICKY CARD (The Stacking Animation)
+// 2. STICKY CARD
 const Card = ({ i, title, desc, image, color, progress, range, targetScale, category, onClick, project }) => {
   const container = useRef(null);
   const { scrollYProgress } = useScroll({
@@ -126,7 +126,7 @@ const Card = ({ i, title, desc, image, color, progress, range, targetScale, cate
     offset: ['start end', 'start start']
   });
 
-  const imageScale = useTransform(scrollYProgress, [0, 1], [1.5, 1]); // Parallax image inside card
+  const imageScale = useTransform(scrollYProgress, [0, 1], [1.5, 1]); 
   const scale = useTransform(progress, range, [1, targetScale]);
 
   return (
@@ -149,7 +149,7 @@ const Card = ({ i, title, desc, image, color, progress, range, targetScale, cate
               onClick={() => onClick(project)}
               className="flex items-center gap-2 text-black font-bold cursor-pointer hover:underline group mt-4 md:mt-0"
             >
-              See Case Study <ArrowUpRight className="group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" size={18}/>
+              See More <ArrowUpRight className="group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" size={18}/>
             </div>
           </div>
 
