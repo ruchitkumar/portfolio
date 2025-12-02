@@ -142,13 +142,10 @@ const Hero = () => {
   );
 };
 
-// --- RESPONSIVE GALLERY ---
-// Uses Horizontal Scroll on Desktop, Vertical Stack on Mobile
 const Gallery = ({ onProjectClick }) => {
   const targetRef = useRef(null);
   const { scrollYProgress } = useScroll({ target: targetRef });
   const x = useTransform(scrollYProgress, [0, 1], ["1%", "-75%"]);
-  
   const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
@@ -159,7 +156,6 @@ const Gallery = ({ onProjectClick }) => {
   }, []);
 
   if (isMobile) {
-    // MOBILE LAYOUT (Vertical Stack)
     return (
       <section className="py-20 px-6 bg-[#F5F5F4]">
         <h3 className="text-xs font-mono uppercase tracking-widest text-gray-500 mb-8">( SELECTED WORKS )</h3>
@@ -184,7 +180,6 @@ const Gallery = ({ onProjectClick }) => {
     );
   }
 
-  // DESKTOP LAYOUT (Horizontal Scroll)
   return (
     <section ref={targetRef} className="relative h-[300vh] bg-[#F5F5F4]">
       <div className="sticky top-0 flex h-screen items-center overflow-hidden">

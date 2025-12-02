@@ -12,7 +12,7 @@ export default function ContactPage() {
     setStatus("submitting");
     const formData = new FormData(e.target);
     try {
-      // 👇 PASTE YOUR FORMSPREE ID HERE 👇
+      // ✅ UPDATED: Your specific Formspree ID is added here
       const response = await fetch("https://formspree.io/f/xkgdbbzo", { 
         method: "POST",
         body: formData,
@@ -41,7 +41,8 @@ export default function ContactPage() {
       {/* Main Content */}
       <div className="relative z-10 min-h-screen flex items-center justify-center px-6 py-24 md:py-20">
         <div className="w-full max-w-5xl grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-24">
-          {/* Info */}
+          
+          {/* Info Section */}
           <motion.div initial={{ opacity: 0, x: -50 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.8 }}>
             <h1 className="text-5xl md:text-7xl font-bold tracking-tighter mb-8 text-black">Let's <br/>Connect.</h1>
             <p className="text-gray-600 text-lg leading-relaxed mb-12 max-w-md">
@@ -59,7 +60,7 @@ export default function ContactPage() {
             </div>
           </motion.div>
 
-          {/* Form */}
+          {/* Form Section */}
           <motion.div initial={{ opacity: 0, y: 50 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, delay: 0.2 }} className="bg-gray-50 border border-gray-100 p-8 md:p-12 rounded-3xl relative">
             {status === "success" ? (
                <div className="absolute inset-0 flex flex-col items-center justify-center text-center p-8 bg-gray-50 rounded-3xl">
