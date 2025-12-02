@@ -1,30 +1,47 @@
 "use client";
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { ArrowLeft, Mail, Linkedin, Github, Send, Loader2, CheckCircle } from 'lucide-react';
+import { ArrowLeft, Mail, Linkedin, Github, Send, Loader2, CheckCircle, AlertCircle } from 'lucide-react';
 import Link from 'next/link';
 
 export default function ContactPage() {
-  const [status, setStatus] = useState(null);
+  const [status, setStatus] = useState(null); // null | "submitting" | "success" | "error"
+  const [errorMessage, setErrorMessage] = useState("");
 
   async function handleSubmit(e) {
     e.preventDefault();
     setStatus("submitting");
+    setErrorMessage("");
+
+    // 1. Capture the form data
     const formData = new FormData(e.target);
+
     try {
-      // ✅ UPDATED: Your specific Formspree ID is added here
-      const response = await fetch("https://formspree.io/f/xkgdbbzo", { 
+      // 2. Send to YOUR Formspree ID (xkgdbbzo)
+      const response = await fetch("https://formspree.io/f/xkgdbbzo", {
         method: "POST",
         body: formData,
-        headers: { 'Accept': 'application/json' }
+        headers: {
+          'Accept': 'application/json'
+        }
       });
+
+      // 3. Handle the result
       if (response.ok) {
         setStatus("success");
-        e.target.reset();
+        e.target.reset(); // Clear the form
       } else {
+        const data = await response.json();
+        // If there's an error from Formspree, show it
+        if (Object.hasOwn(data, 'errors')) {
+          setErrorMessage(data.errors.map(error => error.message).join(", "));
+        } else {
+          setErrorMessage("Oops! There was a problem submitting your form.");
+        }
         setStatus("error");
       }
     } catch (error) {
+      setErrorMessage("Network error. Please verify you are connected to the internet.");
       setStatus("error");
     }
   }
@@ -62,11 +79,12 @@ export default function ContactPage() {
 
           {/* Form Section */}
           <motion.div initial={{ opacity: 0, y: 50 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, delay: 0.2 }} className="bg-gray-50 border border-gray-100 p-8 md:p-12 rounded-3xl relative">
+            
             {status === "success" ? (
                <div className="absolute inset-0 flex flex-col items-center justify-center text-center p-8 bg-gray-50 rounded-3xl">
                  <div className="w-16 h-16 bg-green-100 text-green-600 rounded-full flex items-center justify-center mb-4"><CheckCircle size={32} /></div>
                  <h3 className="text-2xl font-bold text-black mb-2">Message Sent!</h3>
-                 <p className="text-gray-500">I'll get back to you shortly.</p>
+                 <p className="text-gray-500">I have received your message and will reply to <strong>ruchitpotnuru@gmail.com</strong> shortly.</p>
                  <button onClick={() => setStatus(null)} className="mt-6 text-sm text-blue-600 hover:text-blue-500">Send another</button>
                </div>
             ) : (
@@ -75,16 +93,26 @@ export default function ContactPage() {
                 <label className="text-xs font-mono text-gray-500 uppercase tracking-widest">Name</label>
                 <input type="text" name="name" required placeholder="Recruiter Name" className="w-full bg-white border border-gray-200 rounded-lg px-4 py-3 text-black focus:outline-none focus:border-black transition-colors" />
               </div>
+              
               <div className="space-y-2">
                 <label className="text-xs font-mono text-gray-500 uppercase tracking-widest">Email</label>
                 <input type="email" name="email" required placeholder="email@company.com" className="w-full bg-white border border-gray-200 rounded-lg px-4 py-3 text-black focus:outline-none focus:border-black transition-colors" />
               </div>
+              
               <div className="space-y-2">
                 <label className="text-xs font-mono text-gray-500 uppercase tracking-widest">Message</label>
                 <textarea rows="4" name="message" required placeholder="Hi Sai..." className="w-full bg-white border border-gray-200 rounded-lg px-4 py-3 text-black focus:outline-none focus:border-black transition-colors resize-none"></textarea>
               </div>
+              
+              {/* Error Message Bar */}
+              {status === "error" && (
+                <div className="flex items-center gap-2 text-red-600 bg-red-50 p-3 rounded-lg text-sm">
+                  <AlertCircle size={16} /> {errorMessage}
+                </div>
+              )}
+
               <button type="submit" disabled={status === "submitting"} className="w-full bg-black text-white py-4 rounded-xl font-bold uppercase tracking-widest hover:bg-gray-800 transition-all flex items-center justify-center gap-2 mt-2 disabled:opacity-50">
-                {status === "submitting" ? <><Loader2 className="animate-spin" size={16} /> Sending</> : <>Send Message <Send size={16} /></>}
+                {status === "submitting" ? <><Loader2 className="animate-spin" size={16} /> Sending...</> : <>Send Message <Send size={16} /></>}
               </button>
             </form>
             )}
